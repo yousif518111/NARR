@@ -69,37 +69,45 @@
             z-index: 1001;
         }
 
-        .counter {
+        #counter {
             position: fixed;
             top: 10px;
             right: 10px;
             color: white;
-            font-size: 18px;
-            font-weight: 300;
             z-index: 1000;
+            font-size: 18px;
         }
     </style>
 </head>
 <body>
     <img src="button.png" alt="Click Me" id="button" onclick="startRickroll()" />
+    <span id="counter" class="hidden">Counter: <span id="count">0</span></span>
+
     <video id="rickVideo" class="hidden" loop>
         <source src="rick.mp4" type="video/mp4">
     </video>
+
     <div id="rickrollText" class="hidden rickroll-text">Lmao get rickrolled</div> 
+
     <div id="hyperlink" class="hidden tiny-link" onclick="changeVideo()"> (Open-source by yousif518111) </div>
-    <div id="counter" class="counter">Clicks: 0</div>
 
     <script>
-        let count = 0;
+        var count = 0;
 
         function startRickroll() {
-            count++;
-            document.getElementById("counter").innerText = "Clicks: " + count;
             document.getElementById("button").classList.add("hidden");
+            document.getElementById("counter").classList.remove("hidden");
             document.getElementById("rickVideo").classList.remove("hidden");
             document.getElementById("rickrollText").classList.remove("hidden");
             document.getElementById("hyperlink").classList.remove("hidden");
             document.getElementById("rickVideo").play();
+            incrementCounter();
+        }
+
+        function incrementCounter() {
+            count++;
+            document.getElementById("count").innerText = count;
+            setTimeout(incrementCounter, 1000); // Update every second
         }
 
         function changeVideo() {
