@@ -51,7 +51,7 @@
             top: 10px;
             left: 50%;
             transform: translateX(-50%);
-			text-shadow: 2px 2px 4px rgba(0, 0, 0, 1);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 1);
             color: white;
             font-size: 18px;
             font-weight: 300;
@@ -92,8 +92,6 @@
     <div id="hyperlink" class="hidden tiny-link" onclick="changeVideo()"> (Open-source by yousif518111) </div>
 
     <script>
-        var count = 0;
-
         function startRickroll() {
             document.getElementById("button").classList.add("hidden");
             document.getElementById("counter").classList.remove("hidden");
@@ -102,12 +100,24 @@
             document.getElementById("hyperlink").classList.remove("hidden");
             document.getElementById("rickVideo").play();
             incrementCounter();
+            updateCounter();
         }
 
         function incrementCounter() {
-            count++;
-            document.getElementById("count").innerText = count;
-            setTimeout(incrementCounter, 1000); // Update every second
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "increment_counter.php", true);
+            xhr.send();
+        }
+
+        function updateCounter() {
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    document.getElementById("count").innerText = xhr.responseText;
+                }
+            };
+            xhr.open("GET", "get_counter.php", true);
+            xhr.send();
         }
 
         function changeVideo() {
