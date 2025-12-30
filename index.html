@@ -1,1 +1,143 @@
-<meta http-equiv="refresh" content="0;url=http://narr.liveblog365.com/">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>NARR</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            background-color: #1c1c1c;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #button {
+            cursor: pointer;
+            transition: opacity 0.3s;
+        }
+
+        @media (max-width: 599px) {
+            #button {
+                width: 250px;
+            }
+        }
+
+        @media (min-width: 600px) {
+            #button {
+                width: 200px;
+            }
+        }
+
+        .hidden {
+            opacity: 0;
+            display: none;
+        }
+
+		#rickVideo {
+			width: 100%;  
+			height: 100%;  
+			position: relative;  
+			z-index: 999;
+		}
+
+		#rickVideo:hover {
+			cursor: url(rick.cur), auto;
+		}
+
+        .rickroll-text {
+            position: fixed;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 1);
+            color: white;
+            font-size: 18px;
+            font-weight: 300;
+            z-index: 1000;
+        }
+
+        .tiny-link {
+            position: fixed;
+            bottom: 5px;
+            right: 5px;
+            font-size: 10px;
+            color: white;
+            text-decoration: underline;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        #counter {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            color: white;
+            z-index: 1000;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <img src="button.png" alt="Click Me" id="button" onclick="startRickroll()" />
+
+    <span id="counter" class="hidden">Button clicks: <span id="count">0</span></span>
+
+    <video id="rickVideo" class="hidden" loop>
+        <source src="rick.mp4" type="video/mp4">
+    </video>
+
+    <div id="rickrollText" class="hidden rickroll-text">Lmao get rickrolled</div> 
+
+    <div id="hyperlink" class="hidden tiny-link" onclick="changeVideo()"> (Open-source by yousif51811) </div>
+
+    <script>
+        function startRickroll() {
+            document.getElementById("button").classList.add("hidden");
+            document.getElementById("counter").classList.remove("hidden");
+            document.getElementById("rickVideo").classList.remove("hidden");
+            document.getElementById("rickrollText").classList.remove("hidden");
+            document.getElementById("hyperlink").classList.remove("hidden");
+            document.getElementById("rickVideo").play();
+            incrementCounter();
+            updateCounter();
+        }
+
+        function incrementCounter() {
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "increment_counter.php", true);
+            xhr.send();
+        }
+
+        function updateCounter() {
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    document.getElementById("count").innerText = xhr.responseText;
+                }
+            };
+            xhr.open("GET", "get_counter.php", true);
+            xhr.send();
+        }
+
+        function changeVideo() {
+            var video = document.getElementById("rickVideo");
+            video.pause();
+            video.src = "rick1.mp4";
+            video.load();
+            video.play();
+
+            document.getElementById("rickrollText").innerText = "You never learn, do you? Get wreckrolled";
+            document.getElementById("hyperlink").innerText = "(actual link)";
+            document.getElementById("hyperlink").onclick = function() {
+                window.open("https://github.com/yousif51811/NARR", "_blank");
+            };
+        }
+    </script>
+</body>
+</html>
